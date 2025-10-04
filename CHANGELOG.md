@@ -9,3 +9,7 @@
 ## 1.1.1
 
 - Add posibility to manage webview history back events.
+
+## 1.2.0
+
+- Allow apps to customize the WebView background, loading overlay, and indicator.

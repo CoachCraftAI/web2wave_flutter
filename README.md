@@ -165,12 +165,25 @@ Before using Web2Wave, you need to configure API key:
   Web2Wave.shared.openWebPage(
             context: context,
             webPageURL: 'your-url',
-            allowBackNavigation: true
+            allowBackNavigation: true,
             listener: EventListener())
+
+  // Optional: customize the in-app web view appearance
+  Web2Wave.shared.openWebPage(
+            context: context,
+            webPageURL: 'your-url',
+            backgroundColor: const Color(0xFF101010),
+            loadingOverlayColor: Colors.black.withOpacity(0.85),
+            loadingIndicator: const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.white),
+            ),
+          )
 
   //Close web page
   Web2Wave.shared.closeWebPage();
 ```
+
+`backgroundColor`, `loadingOverlayColor`, and `loadingIndicator` are all optional. If they are omitted, the SDK keeps its dark theme defaults (`Color(0xFF0F0F0F)` for the WebView and a slightly transparent overlay with a standard `CircularProgressIndicator`).
 
 ## API Reference
 
@@ -220,9 +233,9 @@ Set Adapty profileID
 
 Set Qonversion ProfileID
 
-#### `void openWebPage({required BuildContext context, required String webPageURL, required bool allowBackNavigation, Web2WaveWebListener? listener})`
+#### `void openWebPage({required BuildContext context, required String webPageURL, Web2WaveWebListener? listener, bool allowBackNavigation = false, Color backgroundColor = Web2WaveWebScreen.defaultBackgroundColor, Color? loadingOverlayColor, Widget? loadingIndicator})`
 
-Open web quiz or landing page
+Open web quiz or landing page. Pass the optional styling arguments to override the default dark background, overlay tint, or loading indicator widget.
 
 #### `void closeWebPage()`
 
