@@ -5,15 +5,23 @@ import 'package:web2wave/web2wave.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Web2WaveWebScreen extends StatefulWidget {
+  static const Color defaultBackgroundColor = Color(0xFF0F0F0F);
+
   final String url;
   final bool allowBackNavigation;
   final Web2WaveWebListener? listener;
+  final Color backgroundColor;
+  final Color? loadingOverlayColor;
+  final Widget? loadingIndicator;
 
   const Web2WaveWebScreen({
     super.key,
     required this.url,
     required this.allowBackNavigation,
     this.listener,
+    this.backgroundColor = defaultBackgroundColor,
+    this.loadingOverlayColor,
+    this.loadingIndicator,
   });
 
   @override
@@ -28,6 +36,7 @@ class _Web2WaveWebScreenState extends State<Web2WaveWebScreen> {
   void initState() {
     super.initState();
     _controller = WebViewController()
+      ..setBackgroundColor(widget.backgroundColor)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -89,11 +98,26 @@ class _Web2WaveWebScreenState extends State<Web2WaveWebScreen> {
                   }
                 }
               },
-              child: WebViewWidget(controller: _controller),
+              child: ColoredBox(
+                color: widget.backgroundColor,
+                child: WebViewWidget(controller: _controller),
+              ),
             )
           else
-            WebViewWidget(controller: _controller),
-          if (!_isLoaded) const Center(child: CircularProgressIndicator()),
+            ColoredBox(
+              color: widget.backgroundColor,
+              child: WebViewWidget(controller: _controller),
+            ),
+          if (!_isLoaded)
+            Positioned.fill(
+              child: Container(
+                color: widget.loadingOverlayColor ??
+                    widget.backgroundColor.withOpacity(0.9),
+                alignment: Alignment.center,
+                child:
+                    widget.loadingIndicator ?? const CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );

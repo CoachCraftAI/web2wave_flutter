@@ -15,7 +15,10 @@ extension Web2WaveQuiz on Web2Wave {
       {required BuildContext context,
       required String webPageURL,
       Web2WaveWebListener? listener,
-      bool allowBackNavigation = false}) {
+      bool allowBackNavigation = false,
+      Color backgroundColor = Web2WaveWebScreen.defaultBackgroundColor,
+      Color? loadingOverlayColor,
+      Widget? loadingIndicator}) {
     assert(apiKey != null, 'You must initialize apiKey before use');
     assert(isValidUrl(webPageURL), 'You must provide valid url');
 
@@ -30,9 +33,12 @@ extension Web2WaveQuiz on Web2Wave {
         builder: (context) {
           dialogContext = context;
           return Web2WaveWebScreen(
-            url: prepareUrl(webPageURL, safeTop, safeBottom),  
+            url: prepareUrl(webPageURL, safeTop, safeBottom),
             allowBackNavigation: allowBackNavigation,
             listener: listener,
+            backgroundColor: backgroundColor,
+            loadingOverlayColor: loadingOverlayColor,
+            loadingIndicator: loadingIndicator,
           );
         });
   }
